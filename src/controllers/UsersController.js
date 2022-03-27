@@ -89,5 +89,21 @@ module.exports = {
             console.error(e.stack);
             return res.status(400).json(e.stack);
         });
-    }
+    },
+
+    //ADMIN
+    async read_admin(req, res){
+        const query = {
+            text: 'SELECT nome, avatar FROM admins'
+        };
+        client
+        .query(query)
+        .then(data => {
+            return res.json(data.rows);
+        })
+        .catch(e => {
+            console.error(e.stack);
+            return res.status(400).json(e.stack);
+        });
+    },
 }

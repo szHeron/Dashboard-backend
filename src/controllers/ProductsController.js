@@ -2,7 +2,7 @@ const client = require('../config/dbconfig');
 
 async function get_one(req, res){
     const query = {
-        text: 'SELECT * FROM users WHERE id = $1',
+        text: 'SELECT * FROM products WHERE id = $1',
         values: [req]
     };
     try{
@@ -15,12 +15,12 @@ async function get_one(req, res){
 
 module.exports = {
     async create(req, res){
-        if(req.body['nome'] || req.body['usuario'] || req.body['senha'] || req.body['email'] || req.body['estado']){
+        if(req.body['nome'] || req.body['valor'] || req.body['quantidade']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
         const query = {
-            text: 'INSERT INTO users(usuario, nome, senha, email, estado) VALUES($1, $2, $3, $4, $5)',
+            text: 'INSERT INTO products(nome, valor, quantidade) VALUES($1, $2, $3)',
             values: Object.keys(req.body).map(i=>req.body[i])
         };
 
@@ -35,7 +35,7 @@ module.exports = {
 
     async read(req, res){
         const query = {
-            text: 'SELECT * FROM users'
+            text: 'SELECT * FROM products'
         };
         client
         .query(query)
@@ -49,13 +49,13 @@ module.exports = {
     },
 
     async update(req, res){
-        if(req.body['nome'] || req.body['usuario'] || req.body['senha'] || req.body['email'] || req.body['estado']){
+        if(req.body['nome'] || req.body['valor'] || req.body['quantidade']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
         const { id } = req.params;
         let query = {
-            text: 'UPDATE users SET usuario = $1, nome = $2, senha = $3, email = $4, estado = $5 WHERE id = $6',
+            text: 'UPDATE products SET nome = $1, valor = $2, quantidade = $3 WHERE id = $4',
             values: Object.keys(req.body).map(i=>req.body[i])
         };
         const user = await get_one(id);
@@ -75,7 +75,7 @@ module.exports = {
     async delete(req, res){
         const { id } = req.params;
         const query = {
-            text: 'DELETE FROM users WHERE id = $1',
+            text: 'DELETE FROM products WHERE id = $1',
             values: [id]
         };
         const user = await get_one(id);

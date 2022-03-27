@@ -2,7 +2,7 @@ const client = require('../config/dbconfig');
 
 async function get_one(req, res){
     const query = {
-        text: 'SELECT * FROM users WHERE id = $1',
+        text: 'SELECT * FROM requests WHERE id = $1',
         values: [req]
     };
     try{
@@ -15,15 +15,10 @@ async function get_one(req, res){
 
 module.exports = {
     async create(req, res){
-        if(req.body['nome'] || req.body['usuario'] || req.body['senha'] || req.body['email'] || req.body['estado']){
-            return res.status(400).json({"error": "Preencha todos os campos"});
-        }
-
         const query = {
             text: 'INSERT INTO users(usuario, nome, senha, email, estado) VALUES($1, $2, $3, $4, $5)',
             values: Object.keys(req.body).map(i=>req.body[i])
         };
-
         client
         .query(query)
         .then(() => {return res.status(200)})
@@ -49,10 +44,6 @@ module.exports = {
     },
 
     async update(req, res){
-        if(req.body['nome'] || req.body['usuario'] || req.body['senha'] || req.body['email'] || req.body['estado']){
-            return res.status(400).json({"error": "Preencha todos os campos"});
-        }
-
         const { id } = req.params;
         let query = {
             text: 'UPDATE users SET usuario = $1, nome = $2, senha = $3, email = $4, estado = $5 WHERE id = $6',
@@ -61,6 +52,7 @@ module.exports = {
         const user = await get_one(id);
 
         query.values.push(id);
+
         client
         .query(query)
         .then(() => {

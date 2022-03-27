@@ -15,12 +15,12 @@ async function get_one(req, res){
 
 module.exports = {
     async create(req, res){
-        if(req.body['tipo'] || req.body['remetente'] || req.body['produto'] || req.body['valor'], req.body['realizada_em']){
+        if(req.body['tipo'] || req.body['remetente'] || req.body['produtos'] || req.body['valor'], req.body['realizada_em']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
         const query = {
-            text: 'INSERT INTO transactions(tipo, remetente, produto, valor, realizada_em) VALUES($1, $2, $3, $4, $5)',
+            text: 'INSERT INTO transactions(tipo, remetente, produtos, valor, realizada_em) VALUES($1, $2, $3, $4, $5)',
             values: Object.keys(req.body).map(i=>req.body[i])
         };
 
@@ -49,13 +49,13 @@ module.exports = {
     },
 
     async update(req, res){
-        if(req.body['tipo'] || req.body['remetente'] || req.body['produto'] || req.body['valor'], req.body['realizada_em']){
+        if(req.body['tipo'] || req.body['remetente'] || req.body['produtos'] || req.body['valor'], req.body['realizada_em']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
         const { id } = req.params;
         let query = {
-            text: 'UPDATE products SET tipo = $1, remetente = $2, produto = $3, valor = $4, realizada_em = $5 WHERE id = $5',
+            text: 'UPDATE products SET tipo = $1, remetente = $2, produtos = $3, valor = $4, realizada_em = $5 WHERE id = $5',
             values: Object.keys(req.body).map(i=>req.body[i])
         };
         const user = await get_one(id);

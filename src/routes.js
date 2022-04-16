@@ -28,7 +28,7 @@ routes.get('/users/admin', UsersController.read_admin, AdminRole());
 routes.post('/products', ProductsController.create);
 routes.get('/products', ProductsController.read);
 routes.put('/products/:id', ProductsController.update);
-routes.delete('/useproductsrs/:id', ProductsController.delete);
+routes.delete('/products/:id', ProductsController.delete);
 
 //Controladores de transação
 routes.post('/transactions', TransactionsController.create);

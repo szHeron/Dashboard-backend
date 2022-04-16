@@ -15,12 +15,12 @@ async function get_one(req, res){
 
 module.exports = {
     async create(req, res){
-        if(req.body['tipo'] || req.body['remetente'] || req.body['produtos'] || req.body['valor'], req.body['realizada_em']){
+        if(!req.body['remetente'] || !req.body['produtos'] || !req.body['valor']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
         const query = {
-            text: 'INSERT INTO transactions(tipo, remetente, produtos, valor, realizada_em) VALUES($1, $2, $3, $4, $5)',
+            text: `INSERT INTO transactions(tipo, remetente, produtos, valor, realizada_em) VALUES($1, $2, $3, $4, to_timestamp(${Date.now()} / 1000.0))`,
             values: Object.keys(req.body).map(i=>req.body[i])
         };
 
@@ -35,7 +35,7 @@ module.exports = {
 
     async read(req, res){
         const query = {
-            text: 'SELECT * FROM transactions'
+            text: "SELECT ID, tipo, remetente, produtos, valor, to_char(realizada_em, 'DD/MM/YYYY') FROM transactions"
         };
         client
         .query(query)
@@ -49,7 +49,7 @@ module.exports = {
     },
 
     async update(req, res){
-        if(req.body['tipo'] || req.body['remetente'] || req.body['produtos'] || req.body['valor'], req.body['realizada_em']){
+        if(!req.body['remetente'] || !req.body['produtos'] || !req.body['valor']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 

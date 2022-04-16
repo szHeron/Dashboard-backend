@@ -15,7 +15,7 @@ async function get_one(req, res){
 
 module.exports = {
     async create(req, res){
-        if(req.body['nome'] || req.body['valor'] || req.body['quantidade']){
+        if(!req.body['nome'] || !req.body['valor'] || !req.body['quantidade']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
@@ -49,7 +49,7 @@ module.exports = {
     },
 
     async update(req, res){
-        if(req.body['nome'] || req.body['valor'] || req.body['quantidade']){
+        if(!req.body['nome'] || !req.body['valor'] || !req.body['quantidade']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 

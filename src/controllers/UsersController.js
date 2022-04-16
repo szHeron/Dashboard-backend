@@ -15,7 +15,7 @@ async function get_one(req, res){
 
 module.exports = {
     async create(req, res){
-        if(req.body['nome'] || req.body['usuario'] || req.body['senha'] || req.body['email'] || req.body['estado']){
+        if(!req.body['nome'] || !req.body['usuario'] || !req.body['senha'] || !req.body['email'] || !req.body['estado']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
@@ -49,7 +49,7 @@ module.exports = {
     },
 
     async update(req, res){
-        if(req.body['nome'] || req.body['usuario'] || req.body['senha'] || req.body['email'] || req.body['estado']){
+        if(!req.body['nome'] || !req.body['usuario'] || !req.body['senha'] || !req.body['email'] || !req.body['estado']){
             return res.status(400).json({"error": "Preencha todos os campos"});
         }
 
@@ -61,6 +61,7 @@ module.exports = {
         const user = await get_one(id);
 
         query.values.push(id);
+        
         client
         .query(query)
         .then(() => {
